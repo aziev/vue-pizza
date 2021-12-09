@@ -87,7 +87,6 @@
           </div>
         </div>
         <h2 class="content__title">Все пиццы</h2>
-        <pre>{{ cart }}</pre>
         <div class="content__items">
           <pizza
               v-for="pizza in pizzas"
@@ -95,6 +94,7 @@
               :id="pizza.id"
               :title="pizza.title"
               :price="pizza.price"
+              :image="pizza.image"
               @add-to-cart="addPizzaToCart"
           ></pizza>
         </div>
@@ -118,18 +118,22 @@ export default {
           id: 1,
           title: 'Маргарита',
           price: 400,
+          image: 'https://dodopizza-a.akamaihd.net/static/Img/Products/dd4b719911d048e0b05c3e4219880e64_366x366.jpeg',
         }, {
           id: 2,
           title: 'Четыре сезона',
           price: 350,
+          image: 'https://dodopizza-a.akamaihd.net/static/Img/Products/ca0730a9b2d6457a899a41765555dc29_366x366.jpeg',
         }, {
           id: 3,
           title: 'Портофино',
           price: 420,
+          image: 'https://dodopizza-a.akamaihd.net/static/Img/Products/0d5410630b5c4f9eba6e8607423a587a_366x366.jpeg',
         }, {
           id: 4,
-          title: 'Мясная',
+          title: 'Мексиканская',
           price: 380,
+          image: 'https://dodopizza-a.akamaihd.net/static/Img/Products/186dfa8511434e5eae09fc109b5a8498_366x366.jpeg',
         },
       ],
       cart: {},

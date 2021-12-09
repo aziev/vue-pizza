@@ -1,3 +1,5 @@
 /.idea
 /html
 /node_modules
+/public/css/app.css
+/public/js/app.js
