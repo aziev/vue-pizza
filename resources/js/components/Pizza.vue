@@ -1,9 +1,9 @@
 <template>
   <div class="pizza-block">
     <img
-        class="pizza-block__image"
         :src="image"
         alt="Pizza"
+        class="pizza-block__image"
     />
     <h4 class="pizza-block__title">{{ title }}</h4>
     <div class="pizza-block__selector">
@@ -12,26 +12,26 @@
             v-for="thickness in ['тонкое', 'традиционное']"
             :class="{'active': thickness === selectedThickness}"
             @click="selectedThickness = thickness"
-        >{{ thickness }}</li>
+            v-text="thickness"
+        />
       </ul>
       <ul>
         <li
             v-for="diameter in [26, 30, 40]"
             :class="{'active': diameter === selectedDiameter}"
             @click="selectedDiameter = diameter"
-        >
-          {{ diameter }} см.
-        </li>
+            v-text="`${diameter} см.`"
+        />
       </ul>
     </div>
-    <div class="pizza-block__bottom">
+    <div class="pizza-block__bottom" @click="addToCart()">
       <div class="pizza-block__price">от {{ price }} ₽</div>
       <div class="button button--outline button--add">
         <svg
-            width="12"
+            fill="none"
             height="12"
             viewBox="0 0 12 12"
-            fill="none"
+            width="12"
             xmlns="http://www.w3.org/2000/svg"
         >
           <path
@@ -39,36 +39,48 @@
               fill="white"
           />
         </svg>
-        <span @click="addToCart()">Добавить</span>
-        <i>2</i>
+        <span>Добавить</span>
+        <i v-if="count">{{ count }}</i>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { computed, ref } from 'vue'
+import useCart from '../composables/useCart'
+
 export default {
-  name: 'Pizza',
   props: {
     id: Number,
     title: String,
     price: Number,
     image: String,
   },
-  data() {
+
+  setup (props) {
+    const { addPizza, getCountForId } = useCart()
+
+    const selectedDiameter = ref(26)
+    const selectedThickness = ref('тонкое')
+
+    const addToCart = () => {
+      addPizza({
+        id: props.id,
+        thickness: selectedThickness.value,
+        diameter: selectedThickness.value,
+        price: props.price,
+      })
+    }
+
+    const count = computed(() => getCountForId(props.id))
+
     return {
-      selectedDiameter: 26,
-      selectedThickness: 'тонкое',
-    };
-  },
-  methods: {
-    addToCart() {
-      this.$emit('add-to-cart', {
-        id: this.id,
-        diameter: this.selectedDiameter,
-        thickness: this.selectedThickness,
-      });
-    },
-  },
+      selectedDiameter,
+      selectedThickness,
+      addToCart,
+      count
+    }
+  }
 }
 </script>
